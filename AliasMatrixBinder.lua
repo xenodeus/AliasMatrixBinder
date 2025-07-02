@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 _addon.name = "AliasMatrixBinder"
 _addon.author = "Xenodeus"
-_addon.version = "1.0.0"
+_addon.version = "1.0.1"
 _addon.commands = {"AliasMatrixBinder", "ambinder"}
 _addon.shortname = "ambinder"
 
@@ -89,28 +89,22 @@ for _, item in ipairs(Helpers.sort_table_by_key_numbers(devices_mapping)) do
 end
 
 settings = config.load(defaults)
-for _, item in ipairs(Helpers.sort_table_by_key_numbers(settings.devices)) do
-    local device_code = item.key
-    local device_settings = item.value
-    if device_settings.options.box_disabled == false then
-        -- Create the display box for each device
-        devices_display_boxes[device_code] = {
-            box = texts.new(device_settings.box),
-            active = false,
-        }
-        devices_display_boxes[device_code].box:hide()
-        devices_display_boxes[device_code].box:pos(device_settings.box.pos.x, device_settings.box.pos.y)
-    end
-end
-
-local keyboard_shortcut = settings.options.keyboard_shortcut or 207
+keyboard_shortcut = settings.options.keyboard_shortcut or 207
 
 windower.register_event('addon command',function (...)
+    if not windower.ffxi.get_info().logged_in then
+        Helpers.addToChat("You must be logged in to use commands.")
+        return
+    end
+
     local commands = {...}
     for x=1,#commands do commands[x] = windower.convert_auto_trans(commands[x]):lower() end
     
     if commands[1] == 'help' then
         addonCommands.Help()
+        return
+    elseif commands[1] == 'reload' or commands[1] == 'r' then
+        windower.send_command('lua reload ' .. _addon.name)
         return
     elseif commands[1] == 'list' then
         addonCommands.List()
@@ -194,7 +188,7 @@ windower.register_event('addon command',function (...)
             Helpers.addToChat("Please specify a keyboard shortcut key code.")
             return
         end
-        addonCommands.SetKeyboardShortcut(commands[2])
+        addonCommands.SetKeyShortcut(commands[2])
         return
     else
         Helpers.addToChat("Unknown command: " .. commands[1])
@@ -222,6 +216,8 @@ windower.register_event('login', function() -- This event is called when the pla
 	coroutine.schedule(function()
         -- Load the settings on login
         settings = config.load(defaults)
+        keyboard_shortcut = settings.options.keyboard_shortcut or 207
+        Helpers.generateDeviceBoxes()
         -- Reset the addon commands and clear cached replacements
         addonCommands.Reset()
         Helpers.clearCachedReplacements()
@@ -237,6 +233,9 @@ end)
 windower.register_event('load', function()
 	--If already logged in, run initialize immediately and set the lockstyle
     if windower.ffxi.get_info().logged_in then
+        settings = config.load(defaults)
+        keyboard_shortcut = settings.options.keyboard_shortcut or 207
+        Helpers.generateDeviceBoxes()
         -- Reset the addon commands and clear cached replacements
         addonCommands.Reset()
         Helpers.clearCachedReplacements()

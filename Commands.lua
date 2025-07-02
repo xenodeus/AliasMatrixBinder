@@ -3,6 +3,7 @@ local addonCommands = {}
 function addonCommands.Help() -- Show help message
     Helpers.addToChat("Available commands:")
     Helpers.addToChat(" - "..(_addon.shortname):color(220).." "..("help"):color(220)..": Show this help message")
+    Helpers.addToChat(" - "..(_addon.shortname):color(220).." "..("reload"):color(220).."/"..("r"):color(220)..": Reload the addon")
     Helpers.addToChat(" - "..(_addon.shortname):color(220).." "..("list"):color(220)..": List available devices")
     Helpers.addToChat(" - "..(_addon.shortname):color(220).." "..("setkeyshortcut"):color(220).." "..("<key_code>"):color(167)..": Set keyboard shortcut key code (8-254)")
     Helpers.addToChat(" - "..(_addon.shortname):color(220).." "..("show"):color(220)..": Show current active devices aliases")
@@ -212,7 +213,7 @@ function addonCommands.DisableBox(device_code)
     end
 end
 
-function addonCommands.SetKeyboardShortcut(key_code)
+function addonCommands.SetKeyShortcut(key_code)
     key_code = tonumber(key_code)
     if key_code and key_code >= 8 and key_code <= 254 then
         settings.options.keyboard_shortcut = key_code

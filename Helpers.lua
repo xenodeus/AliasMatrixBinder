@@ -554,4 +554,23 @@ function Helpers.setCurrentActiveDeviceText(device_code, config_keys)
     end
 end
 
+function Helpers.generateDeviceBoxes()
+    for _, item in ipairs(Helpers.sort_table_by_key_numbers(settings.devices)) do
+        local device_code = item.key
+        local device_settings = item.value
+        if device_settings.options.box_disabled == false then
+            if devices_display_boxes[device_code] ~= nil and devices_display_boxes[device_code].box ~= nil then
+                devices_display_boxes[device_code].box:destroy() -- Destroy existing box if it exists
+            end
+            -- Create the display box for each device
+            devices_display_boxes[device_code] = {
+                box = texts.new(device_settings.box),
+                active = false,
+            }
+            devices_display_boxes[device_code].box:hide()
+            devices_display_boxes[device_code].box:pos(device_settings.box.pos.x, device_settings.box.pos.y)
+        end
+    end
+end
+
 return Helpers

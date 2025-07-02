@@ -47,13 +47,13 @@ The addon responds to both `//AliasMatrixBinder` and `//ambinder` commands:
 - `//ambinder setonjobchange <device_code> [config_keys]` - Set configuration to apply on job change
 
 ### Settings
-- `//ambinder setkeyboardshortcut <key_code_or_name>` - Set keyboard shortcut for show/hide toggle
+- `//ambinder setkeyshortcut <key_code_or_name>` - Set keyboard shortcut for show/hide toggle
   - Accepts numeric key codes (8-254)
 
 ## Keyboard Shortcuts
 
 - **Default**: END key (207) - Hold to show device displays, release to hide
-- **Customizable**: Use `setkeyboardshortcut` command to change
+- **Customizable**: Use `setkeyshortcut` command to change
 
 ## Usage Examples
 
@@ -82,7 +82,7 @@ The addon responds to both `//AliasMatrixBinder` and `//ambinder` commands:
 //ambinder toggle   # Toggle display visibility
 
 # Keyboard shortcut configuration
-//ambinder setkeyboardshortcut 207       # Use END key
+//ambinder setkeyshortcut 207       # Use END key
 ````
 
 ## File Structure
@@ -224,6 +224,21 @@ Settings are automatically saved and include:
 - `texts` library
 - `logger` library
 
+## Changelog
+
+### Version 1.0.1 (July 2, 2025)
+
+#### Bug Fixes
+- Fixed issue where loading the addon prior to being logged in resulted in settings not being applied to the displayed boxes
+- Fixed command alias for keyboard shortcut setting - changed `setkeyboardshortcut` to `setkeyshortcut` for consistency with documentation
+
+#### New Features
+- Added reload functionality (`//ambinder reload` or `//ambinder r`) for quick addon reloading
+
+#### Code Improvements
+- Updated version number to 1.0.1
+- Minor code cleanup and organization
+
 ## Recommended Companion Addon
 
 For enhanced functionality, consider using **[execOnFocus](https://github.com/xenodeus/execOnFocus)** alongside AliasMatrixBinder:
@@ -232,7 +247,7 @@ For enhanced functionality, consider using **[execOnFocus](https://github.com/xe
 
 ## Author
 
-**Xenodeus** - Version 1.0.0
+**Xenodeus** - Version 1.0.1
 
 ## License
 
